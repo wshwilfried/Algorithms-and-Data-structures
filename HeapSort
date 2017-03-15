@@ -1,0 +1,202 @@
+/*
+@Author Wilfried Simo 03/144/2017 Korea
+This C program implements the heap sort algorithm
+on integers.
+I use the same array to store the heap and print the output of the heapSort algorithm
+So only one array is needed.
+*/
+
+#include <stdio.h>
+#define MAX_ITEM 64
+
+typedef struct _persoHeap_
+{
+	int heap[MAX_ITEM];
+	int actualNbElements;
+}persoHeap, *ppersoHeap;
+
+void swap(int &val1, int &val2);
+void printHeap(ppersoHeap pHeap);
+void deleteHeap(ppersoHeap pHeap);
+bool heapInsert(ppersoHeap pHeap, int element);
+bool heapDeleteMax(ppersoHeap pHeap, int &maxElement);
+
+
+int main()
+{
+	int element;
+	int maxElement;
+	char ch;
+	persoHeap pHeap;
+	pHeap.actualNbElements = 0;
+	int idx, idx2;
+	int upperBound;
+	
+	printf("Enter Heap elements\n");
+	
+	while(scanf("%d%c", &element, &ch)) 
+	{
+		if (heapInsert(&pHeap, element) == false)
+		{
+			printf("Max elements reached in the heap...\n");
+			break;
+		}
+		
+		if (ch == '\n')
+		{
+			break;
+		}
+	}
+		
+	printHeap(&pHeap);
+	upperBound = pHeap.actualNbElements;
+	idx = 1;
+	
+	while(idx <= upperBound)
+	{
+		if (heapDeleteMax(&pHeap, maxElement))
+		{
+			printf("%d was picked\n", maxElement);
+		}
+		else
+		{
+			printf("Error heapDeleteMax\n");
+			break;
+		}
+			
+		printf("\n");
+		idx++;
+	}
+	
+	printf("\nHeapSort\n");
+	
+	for (idx = 1; idx <= upperBound; idx++)
+	{
+		printf("%d, ", pHeap.heap[idx]);
+	}
+	
+	return 0;
+}
+
+
+void printHeap(ppersoHeap pHeap)
+{
+	int idx = 1;
+	int leftChild, rightChild;
+	
+	printf("We have %d Elements in the Heap\n", pHeap->actualNbElements);
+	
+	for (idx = 1; idx <= pHeap->actualNbElements; idx++)
+	{
+		leftChild = 2*idx;
+		rightChild = 2*idx+1;
+		
+		printf("indx %d-->[%d]\n", idx,  pHeap->heap[idx]);
+		if (leftChild <= pHeap->actualNbElements) 	printf("indx %d-->[%d]\n", leftChild, pHeap->heap[leftChild]);
+		else printf("indx %d has No leftChild\n", leftChild);
+		if (rightChild <= pHeap->actualNbElements) 	printf("indx %d-->[%d]\n", rightChild, pHeap->heap[rightChild]);
+		else printf("indx %d has No rightChild\n", rightChild);
+	}
+	
+}
+
+bool heapInsert(ppersoHeap pHeap, int element)
+{	
+	int parentIdx;
+	int childIdx;
+
+	if (pHeap->actualNbElements >= MAX_ITEM)
+	{
+		return false;
+	}
+	
+	pHeap->actualNbElements++;
+		
+	pHeap->heap[pHeap->actualNbElements] = element;
+	
+	parentIdx = pHeap->actualNbElements/2;
+	childIdx = pHeap->actualNbElements;
+	
+	while (parentIdx)
+	{
+		if (pHeap->heap[parentIdx] < pHeap->heap[childIdx])
+		{
+			swap(pHeap->heap[parentIdx], pHeap->heap[childIdx]);
+		}
+		
+		childIdx = parentIdx;
+		parentIdx = parentIdx / 2;
+	}
+	
+	return true;
+}
+
+void swap(int &val1, int &val2)
+{
+	int aux;
+	aux = val1;
+	val1 = val2;
+	val2 = aux;
+	
+	return;
+}
+
+bool heapDeleteMax(ppersoHeap pHeap, int &maxElement)
+{
+	int parentIdx = 1;
+	int leftChildIdx;
+	int rightChildIdx;
+	int maxChild;
+	int maxChildIdx;
+
+	if (pHeap->actualNbElements < 1)
+	{
+		return false;
+	}
+	
+	maxElement = pHeap->heap[1];
+	swap(pHeap->heap[1], pHeap->heap[pHeap->actualNbElements]);
+	pHeap->actualNbElements--;
+	
+	while (parentIdx <= pHeap->actualNbElements && parentIdx >= 1)
+	{
+		leftChildIdx = 2*parentIdx;
+		rightChildIdx = leftChildIdx + 1;
+		maxChildIdx = 0;
+		
+		if (leftChildIdx <= pHeap->actualNbElements)
+		{
+			if (rightChildIdx <= pHeap->actualNbElements)
+			{
+				if (pHeap->heap[leftChildIdx] > pHeap->heap[rightChildIdx])
+				{
+					maxChildIdx = leftChildIdx;
+				}
+				else
+				{
+					maxChildIdx = rightChildIdx;
+				}
+			}
+			else
+			{
+				maxChildIdx = leftChildIdx;
+			}
+			
+			if (pHeap->heap[parentIdx] < pHeap->heap[maxChildIdx]) swap(pHeap->heap[parentIdx], pHeap->heap[maxChildIdx]);
+		}
+		else
+		{
+			break;
+		}
+		   
+		parentIdx = maxChildIdx;
+	}
+	
+	return true;
+}
+
+
+
+
+
+
