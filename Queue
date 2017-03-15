@@ -1,0 +1,183 @@
+/*
+@author Wilfried Simo
+This program is the implementation of a finite 
+size queue of interger.
+@Date 3/13/2017 Korea.
+
+Next I will be covering an implementation of a queue that use 
+linked list thus solving the limited size problem.
+
+The most important concept here is to know that a queue implement the FIFO 
+rule once you understand that the rest is pretty easy to figure out.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define maxElement 32
+
+typedef struct _wegQ_
+{
+	int currentPosition;
+	int Q[maxElement];
+}persoQ, *ppersoQ;
+
+bool putInQ(int element, ppersoQ queue);
+bool removeFromQ(ppersoQ queue, int &elementToRemove);
+int getQElements(ppersoQ queue);
+void printMenu();
+
+int main()
+{
+	int idx = 0;
+	int elementRemoved = 0;
+	int element = 0;
+	char choice, ch;
+	char line[256];
+	int upBound = 0;   
+	persoQ queue;
+	queue.currentPosition = 1; 
+		
+	printMenu();	
+	
+	while(choice != 'E')
+	{
+			scanf("%c", &choice);
+			
+			switch(choice)
+			{
+				case 'I':
+					
+				printf("Enter the element(s)\n");
+			
+				while(scanf("%d%c", &element, &ch))
+				{
+					if(putInQ(element, &queue) == false)
+					{
+						printf("Error Inserting; max size possibly reached...\n");
+						break;
+					}
+					else
+					{
+						printf("%d was added to the queue..\n", element);
+					}
+					
+					if (ch == '\n'){break;}
+				}
+		
+					break;
+					
+				case 'S':
+					
+					if (removeFromQ(&queue, elementRemoved) == false)
+					{
+						printf("No more elements...\n");
+					}
+					else
+					{
+						printf("%d was Served..\n", elementRemoved);
+					}
+		
+					break;
+					
+				case 'N':
+					printf("We have %d elements...\n", getQElements(&queue));
+					break;
+					
+				case 'D':
+					idx = 1;
+					upBound = queue.currentPosition;
+					while (idx < upBound)
+					{
+						if (removeFromQ(&queue, elementRemoved) == false)
+						{
+							printf("No more elements...\n");
+						}
+						else
+						{
+							printf("%d was discarded..\n", elementRemoved);
+						}
+						
+						idx++;
+					}
+					
+				break;
+					
+				case 'E':
+				choice = 'E';
+				break;
+				
+				case 'h':
+				case 'H':
+					printMenu();	
+					break;
+			}
+	}
+	
+
+	return 0;
+}
+
+bool putInQ(int element, ppersoQ queue)
+{
+	int current = queue->currentPosition;
+	if(queue->currentPosition > maxElement)
+	{
+		return false;
+	}
+	
+	queue->Q[current] = element;
+	queue->currentPosition ++;
+	return true;
+}
+
+bool removeFromQ(ppersoQ queue, int &elementToRemove)
+{
+	if (queue->currentPosition == 1) 
+	{
+		return false;
+	}
+	
+	int idx = 1;
+	elementToRemove = queue->Q[1];
+	for (idx = 1; idx <= queue->currentPosition-1; idx++)
+	{
+		queue->Q[idx] = queue->Q[idx+1];
+	}
+	
+	queue->currentPosition--;
+	return true;
+}
+
+
+int getQElements(ppersoQ queue)
+{
+	return queue->currentPosition-1;
+}
+
+
+
+void printMenu()
+{
+	printf("!!!!!!!!!!!!!!!!!!Menu!!!!!!!!!!!!!!!!\n");
+	printf("I == Insert elemet(s) in the Q\n");
+	printf("D == delete all elements in the Q\n");
+	printf("S == gext the next element in the Q\n");
+	printf("N == Get Number of elements in the Q\n");
+	printf("E == Exit Q\n");
+	printf("!!!!!!!!!!!!!!!!!!Menu!!!!!!!!!!!!!!!!\n");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
