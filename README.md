@@ -1,4 +1,1 @@
-# HackerRank-Stock-Maximizer
-www.hackerrank.com/challenges/stockmax
-
-This a simple working solution to the StockMax challenge on Hackerrank
+Hello, As I am reviewing ADT and algorithms I put here all the implementations of algotithm I come accross.
