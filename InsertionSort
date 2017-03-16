@@ -1,0 +1,58 @@
+#include <stdio.h>
+#define MAX_ELEMENTS 10
+
+void swap(int &a, int &b);
+
+int main()
+{
+	int element;
+	char ch;
+	int idx = 0;
+	int idxOut = 1;
+	int idxIn = 1;
+	int Tab[MAX_ELEMENTS];
+	
+	printf("Enter %d Elements to be sorted...\n", MAX_ELEMENTS);
+	
+	while(scanf("%d%c", &element, &ch))
+	{
+		idx++;
+		Tab[idx] = element;
+		if (ch == '\n') break;
+	}
+	
+	printf("All elements entered...\n");
+	
+	for (idxOut = 2; idxOut <= MAX_ELEMENTS; idxOut++)
+	{
+		for(idxIn = idxOut - 1; idxIn >= 1; idxIn--)
+		{
+			if (Tab[idxIn+1] < Tab[idxIn])
+			{
+				swap(Tab[idxIn+1], Tab[idxIn]);
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+	
+	idx = 1;
+	
+	for (idx = 1; idx <= MAX_ELEMENTS; idx++)
+	{
+		printf("%d; ", Tab[idx]);
+	}
+	
+	return 0;
+}
+
+
+void swap(int &a, int &b)
+{
+	int aux = a;
+	a = b;
+	b = aux;
+	return;
+}
