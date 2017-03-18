@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+int sumLogic(int val1, int val2);
+
+int main(int argc, char * argv[])
+{
+    int a, b, sum;  
+	cout <<"Enter 2 integers  " <<endl;
+	cin >>a >> b;
+
+	sum = sumLogic(a, b);
+	cout << "Sum is " << sum << endl;
+
+	return 0;
+}
+
+int sumLogic(int sum, int carry)
+{
+	int auxS = 0;
+	int auxC = 0;
+
+	cout << "Computing sum "<< sum << " + " << carry <<endl;
+
+	if (carry == 0) return sum;
+
+	auxS = (sum ^ carry);
+	auxC = (sum & carry) << 1;
+	return sumLogic(auxS, auxC);
+}
