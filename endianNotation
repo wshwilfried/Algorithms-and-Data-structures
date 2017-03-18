@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+
+
+int main(int argc, char * argv[])
+{
+	unsigned int number = 0x000F;
+	int *address = NULL;
+	address = (int*)&number;
+	(address[0] == 15) ? cout << "Litle Endian" : cout <<"Big endian" << endl; 
+	return 0;
+}
