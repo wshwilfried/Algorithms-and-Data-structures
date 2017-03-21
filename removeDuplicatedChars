@@ -1,0 +1,75 @@
+#include <iostream>
+using namespace std;
+void letShift(string &str, int lowerBound, int upperBound);
+
+int main(int argc, char **argv)
+{
+	string myString;
+	int id = 1;
+	int nbOccurence;
+	char car;
+	int strLength;
+	int nbDuplicates;
+	
+	cout <<"Input string"<<endl;
+	cin >> myString;
+	
+	strLength = myString.length();
+	
+	if (strLength <= 1)
+	{
+		cout <<"No duplicates .."<<endl;
+		goto clean;
+	}
+	
+	if (strLength <= 1)
+	{
+		cout <<"No duplicates .."<<endl;
+		goto clean;
+	}
+	
+	for (int idx = 0; idx < strLength; idx++)
+	{
+		nbOccurence =0;
+		car = myString.at(idx);
+		
+		for (int idx1 = 1; idx1 < strLength; idx1++)
+		{
+			if (myString.at(idx1) == car)
+			{
+				nbOccurence++;
+			}
+		}
+			
+		while(nbOccurence > 0)
+		{
+			for (int idx0 = idx+1; idx0 < strLength; idx0++)
+			{
+				if (myString.at(idx0) == car)
+				{
+					letShift(myString, idx0, strLength - 1);
+					nbDuplicates++;
+				}
+			}
+			nbOccurence--;
+		}
+	
+	}
+	
+	cout <<"String without duplicates is " << myString<<endl;
+    
+	clean:	
+	return 0;
+}
+
+void letShift(std::string &str, int lowerBound, int upperBound)
+{
+	for (int idx = lowerBound; idx < upperBound; idx++)
+	{
+		str.at(idx) = str.at(idx + 1);
+	}
+	
+	str.at(upperBound) = '\0';
+	
+	return;
+}
